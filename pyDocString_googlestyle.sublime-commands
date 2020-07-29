@@ -1,0 +1,22 @@
+[
+    {
+        "caption":"pyDocString Module",
+        "command":"insert_module"
+    },
+    {
+        "caption":"pyDocString Function",
+        "command":"insert_func"
+    },
+    {
+        "caption":"pyDocString Test",
+        "command":"test"
+    },
+    {
+        "caption":"pyDocString Class",
+        "command":"insert_class"
+    },
+    {
+        "caption":"pyDocstring showpopup",
+        "command":"show_popup"
+    }
+]
