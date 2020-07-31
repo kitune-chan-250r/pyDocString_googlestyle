@@ -1,17 +1,20 @@
-import time
+import re
 
-def nowtime():
-    now = time.time()
-    for i in range(1, 8):
-        print("d")
-    return now
+method_text = r'def func_name(args):\n    args = 1\n    return args'
+class_text = r"""
+def run(self, edit, point, flags):
+    '''ポップアップを表示
 
+    Todo:
+        *パーサーメソッドを用意しdocstringを読み込む
+        *ホバーしているメソッド呼び出しのメソッドが同じファイルにあるか判別
+        ＞パース＞コンテンツ生成＞show popup
+    '''
+"""
 
-#32,49 (64, 54)
+def is_func(text):
+    pattern = "'''.*'''"
+    res = re.search(pattern, text, re.S)
+    return res.group()
 
-
-
-
-
-
-
+print(is_func(class_text))

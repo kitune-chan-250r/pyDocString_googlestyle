@@ -45,7 +45,7 @@ class ShowPopupCommand(sublime_plugin.TextCommand):
         #potisonからスコープネームや単語を取得
         str_word = self.view.substr(self.view.word(point)) #カーソル位置の単語取得
         scope = self.view.scope_name(point)
-        print(scope)
+        #print(scope)
         score_class = self.view.score_selector(point, 'entity.name.class.python')
         score_method = self.view.score_selector(point, 'entity.name.function.python')
         score_fanc_call = self.view.score_selector(point, 'meta.function-call.python')
@@ -69,8 +69,7 @@ class ShowPopupCommand(sublime_plugin.TextCommand):
         #mdpopups.show_popup(self.view, content, css, flags, location)
         mdpopups.update_popup(self.view, content, None, css)
 
-        ext = self.view.extract_scope(point)
-        lines = self.view.substr(ext)
+        _parth_docstring(self.view, str_word, 'def')
 
 def _visivle_text_point(view, row, col):
     viewport = view.visible_region()
@@ -83,8 +82,14 @@ def _load_popup_css(path):
     css_lines.append(sublime.load_resource(css_path))
     return ''.join(css_lines)
 
-def _to_html(text):
-    yield html.escape(text, quote=False).replace('  ', '&nbsp;&nbsp;') or '↵'
+def _parth_docstring(view, method_name, _type):
+    '''arg type: "class" or "def"'''
+    pattern = '{0} {1}'.format(_type, method_name)
+    method_region = view.find(pattern, 0) #methodが定義されているregionを取得
+    if method_region != sublime.Region(-1, -1):
+        line = view.line(method_region)
+        line_str = view.substr(line)
+        print(line_str)
 
 class EventListener(sublime_plugin.EventListener):
     #　マウスオーバーでこのメソッドが実行
@@ -97,7 +102,5 @@ class EventListener(sublime_plugin.EventListener):
 
         view.run_command('show_popup', {
             'point': point, 'flags': sublime.HIDE_ON_MOUSE_MOVE})
-
-        view.find()
         
         
